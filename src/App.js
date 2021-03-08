@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import 'leaflet/dist/leaflet.css';
+import firebase from "./Firebase";
+import React, { Component} from "react";
+import Map from "./Map";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  constructor(){
+    super();
+    this.app =  firebase;
+    this.database = this.app.database().ref().child('position');
+    this.state = {
+      lat: 24.857518,
+      lng: 67.032169
+    };
+  }
+
+  componentDidMount(){
+    this.database.on('value', (snapshot) =>{
+      let data = snapshot.val();
+      this.setState({
+        lat: data.lat,
+        lng: data.lng
+      });
+    });
+  }
+  render(){
+    return (
+      <div >
+        <Map lat={this.state.lat} lng={this.state.lng}/>
+      </div>
+    );
+  }
 }
+
+
 
 export default App;
