@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -14,11 +14,17 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 function Map({lat,lng}) {
+  const [Latitude, setLatitude] = useState(lat);
+  const [Longitude, setLongitude] = useState(lng);
+  // useEffect(() => {
+  //   setLatitude=lat;
+  //   setLongitude=lng;
+  // }, [lat,lng]);
   return (
     <div className="map">
       <LeafletMap
-        center={[lat, lng]}
-        zoom={12}
+        center={[Latitude, Longitude]}
+        zoom={15}
         scrollWheelZoom={true}
       >
         <TileLayer
